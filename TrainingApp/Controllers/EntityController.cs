@@ -5,11 +5,17 @@ namespace TrainingApp.Controllers
 {
     public abstract class EntityController<T,U> : Controller
     {
-        private ICreate<T> _create;
+        protected ICreate<T> _create;
+        protected IUpdate<T> _update;
+        protected IDelete<T> _delete;
+        protected ISelect<T> _select;
 
-        public EntityController(ICreate<T> create)
+        public EntityController(ICreate<T> create, IUpdate<T> update, IDelete<T> delete, ISelect<T> select)
         {
             _create = create;
+            _update = update;
+            _delete = delete;
+            _select = select;
         }
 
         public abstract void DoCreate(T entity, U entityViewModel);

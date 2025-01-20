@@ -7,9 +7,14 @@ namespace TrainingApp.Controllers
 {
     public class UserController : EntityController<User, UserViewModel>
     {
+        public UserController(ICreate<User> create, IUpdate<User> update, IDelete<User> delete, ISelect<User> select) : base(create, update, delete, select)
+        {
+
+        }
+
         public override void DoCreate(User entity, UserViewModel entityViewModel)
         {
-            Console.WriteLine("Hello");
+            _create.Create(entity);
         }
 
         public override void DoDelete(int id)

@@ -1,7 +1,15 @@
+using TrainingAppData.DB.DBCONTROLLER.USER.Sql;
+using TrainingAppData.DB.INTERFACE;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped(typeof(ICreate<>), typeof(CreateSqlUser));
+builder.Services.AddScoped(typeof(IUpdate<>), typeof(CreateSqlUser));
+builder.Services.AddScoped(typeof(IDelete<>), typeof(DeleteSqlUser));
+builder.Services.AddScoped(typeof(ISelect<>), typeof(SelectSqlUser));
 
 var app = builder.Build();
 

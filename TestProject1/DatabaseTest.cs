@@ -15,6 +15,6 @@ public class DatabaseTest
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // Add a JSON configuration file
             .Build(); // Build the configuration
 
-        DatabaseController controller = new DatabaseController(configuration);
+        DatabaseController controller = new DatabaseController();
     }
 }

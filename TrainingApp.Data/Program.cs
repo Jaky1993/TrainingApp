@@ -44,4 +44,14 @@ using (var scope = app.Services.CreateScope())
   databaseService.CreateDatabase("TrainingAppDB");
 }
 
+//Generate User table and store procedures
+//Scope mi permette di creare un service provider -> fornitore di servizi
+using (var scope = app.Services.CreateScope())
+{
+    //ritorna un'istanza della classe SQLServerDatabase
+    var generateUserTable = scope.ServiceProvider.GetRequiredService<SQLServerDatabase>();
+    //Richiamo il metodo GenerateSqlFromFile e gli passo il path del file
+    generateUserTable.GenerateTableFromFile("MODEL/SQL/User.sql", "User", "Schema");
+}
+
 app.Run();

@@ -3,14 +3,9 @@ using TrainingAppData.MODEL;
 
 namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
 {
-    public class DeleteUser : IDelete<User>
+    public class UpdateSqlUser : IUpdate<User>
     {
-        public void Delete(Guid guid)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int id)
+        public void Update(User entity)
         {
             throw new NotImplementedException();
         }

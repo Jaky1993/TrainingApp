@@ -1,11 +1,11 @@
 ﻿using TrainingAppData.DB.INTERFACE;
 using TrainingAppData.MODEL;
 
-namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
+namespace TrainingAppData.DB.DBCONTROLLER.USER.MongoDB
 {
-    public class UpdateUser : IUpdate<User>
+    public class CreateMongoDBUser : ICreate<User>
     {
-        public void Update(User entity)
+        public void Create(User entity)
         {
             throw new NotImplementedException();
         }

@@ -3,9 +3,14 @@ using TrainingAppData.MODEL;
 
 namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
 {
-    public class CreateUser : ICreate<User>
+    public class DeleteSqlUser : IDelete<User>
     {
-        public void Create(User entity)
+        public void Delete(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int id)
         {
             throw new NotImplementedException();
         }

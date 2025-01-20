@@ -4,7 +4,7 @@ using TrainingAppData.DB.INTERFACE;
 
 namespace TrainingAppData.DB.CONTROLLER
 {
-    public class EntitySqlController<T> : DatabaseController, IDatabaseController
+    public class EntitySqlController : DatabaseController, IDatabaseController
     {
         public static string _connectionDatabaseString;
         public static string _connectionSqlServerCreateDB;

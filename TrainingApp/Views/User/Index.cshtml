@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TrainingApp.VIEWMODEL.UserViewModel>
+<br />
+
+<div class="container p-4 border">
+    <div class="row pb-2">
+        <div class="col">
+            <h1 class="text-primary">User List</h1>
+        </div>
+        <div class="col text-end pt-1">
+            <a asp-controller="User" asp-action="Create user" class="btn btn-outline-primary">Create New User</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Age
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.UserName</td>
+                    <td>@item.Age</td>
+                    <td>
+                        <a asp-controller="User" asp-action="DoUpdate" asp-route-villaId="@item.Id" class="btn btn-success"><i class="bi bi-file-earmark-plus-fill"></i></a>
+                        <a asp-controller="User" asp-action="DoDelete" asp-route-villaId="@item.Id" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

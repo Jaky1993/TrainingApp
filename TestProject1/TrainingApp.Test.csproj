@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TrainingApp.Data\TrainingAppData.csproj" />
+    <ProjectReference Include="..\TrainingApp\TrainingApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

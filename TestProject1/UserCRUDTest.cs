@@ -41,4 +41,12 @@ public class UserCRUDTest
 
         user = selectUser.Select(guid);
     }
+
+    [TestMethod]
+    public void TestSelectUserList()
+    {
+        SelectSqlUser selectUserList = new SelectSqlUser();
+
+        List<User> userList = selectUserList.SelectList();
+    }
 }

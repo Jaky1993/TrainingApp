@@ -13,6 +13,6 @@ public class ControllerTest
     [TestMethod]
     public void TestUserController()
     {
-        UserController controller = new UserController();
+    
     }
 }

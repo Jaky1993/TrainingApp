@@ -46,13 +46,8 @@ namespace TrainingApp.Controllers
         Quando si utilizza il metodo, il comportamento effettivo è determinato dal tipo di oggetto a cui appartiene,
         non dal tipo della variabile che contiene il riferimento all'oggetto.
         */
-        public virtual ActionResult Create(U entityViewModel)
-        {
-            return View(entityViewModel);
-        }
 
-        [HttpPost]
-        public virtual ActionResult Create(U entityViewModel, List<Tuple<string, string>> errorList)
+        public virtual ActionResult Create(U entityViewModel)
         {
             return View();
         }

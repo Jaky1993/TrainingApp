@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TrainingApp.VIEWMODEL;
 using TrainingAppData.DB.INTERFACE;
 using TrainingAppData.MODEL;
@@ -44,6 +45,7 @@ namespace TrainingApp.Controllers
             return userList;
         }
 
+        [HttpPost]
         public override ActionResult DoUpdate(User user, UserViewModel userViewModel)
         {
             user = _mapper.Map<User>(userViewModel);
@@ -55,7 +57,9 @@ namespace TrainingApp.Controllers
             {
                 userViewModel = _mapper.Map<UserViewModel>(user);
 
-                return RedirectToAction("Create", "User", userViewModel);
+                TempData["errorList"] = JsonSerializer.Serialize(errorList);
+
+                return RedirectToAction("Create","User", userViewModel);
             }
 
             if (user.Id == 0)
@@ -82,15 +86,14 @@ namespace TrainingApp.Controllers
             return View(userViewModelList);
         }
 
-        public override ActionResult Create(UserViewModel userViewModel, List<Tuple<string,string>> errorList)
+        public override ActionResult Create(UserViewModel entityViewModel)
         {
-            User user = new User();
+            if (TempData["errorList"] != null)
+            {
+                ViewBag.Error = JsonSerializer.Deserialize<List<Tuple<string, string>>>(TempData["errorList"].ToString());
+            }            
 
-            DoUpdate(user, userViewModel);
-
-            ViewBag.Error = errorList;
-
-            return View("Create", userViewModel);
+            return View("Create", entityViewModel);
         }
     }
 }

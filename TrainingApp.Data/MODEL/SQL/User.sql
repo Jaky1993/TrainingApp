@@ -85,4 +85,3 @@ BEGIN
 	UPDATE [User] SET [DeleteDate] = @DeleteDate WHERE [User].Id = @Id
 END
 
-GO

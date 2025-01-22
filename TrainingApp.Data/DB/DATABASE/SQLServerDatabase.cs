@@ -1,4 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using System.Data;
+using System.IO;
+using System.Transactions;
 using TrainingAppData.DB.CONTROLLER;
 using TrainingAppData.DB.Interface;
 
@@ -79,6 +82,36 @@ namespace TrainingAppData.DB.SQLDatabase
             }
         }
 
+        public bool IsAlreadyExistStoreProcedure(string storeProcedureName)
+        {
+            bool result = false;
+
+            EntitySqlController entitySqlController = new EntitySqlController();
+
+            SqlConnection connection = new SqlConnection(EntitySqlController._connectionDatabaseString);
+            connection.Open();
+
+            SqlCommand command = connection.CreateCommand();
+            command.Connection = connection;
+
+            command.CommandText = $"SELECT OBJECT_ID('@storeProcedureName', 'P')";
+            command.Parameters.AddWithValue("@storeProcedureName", storeProcedureName);
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                /*
+                Yes, reader.IsDBNull(0) is a method that checks whether the column at the specified ordinal 
+                (in this case, the first column) contains a database null (DBNull) value.
+                It returns true if the column contains a null value, otherwise it returns false.   
+                */
+                if (reader.Read() && !reader.IsDBNull(0))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
         public void GenerateTableFromFile(string path, string tableName, string schema)
         {
             if (!IsTableAlreadyExist(tableName, schema))
@@ -98,9 +131,9 @@ namespace TrainingAppData.DB.SQLDatabase
 
                     foreach (string batch in batchList)
                     {
-                        using (SqlCommand command = new SqlCommand(batch, connection, transaction)) 
-                        { 
-                            command.ExecuteNonQuery(); 
+                        using (SqlCommand command = new SqlCommand(batch, connection, transaction))
+                        {
+                            command.ExecuteNonQuery();
                         }
                     }
 
@@ -116,6 +149,40 @@ namespace TrainingAppData.DB.SQLDatabase
                 {
                     connection.Close();
                     transaction.Dispose();
+                }
+            }
+        }
+
+        public void AddSelectMaxVersionId(string path)
+        {
+            if (!IsAlreadyExistStoreProcedure("SelectMaxVersionId"))
+            {
+                EntitySqlController entitySqlController = new EntitySqlController();
+
+                SqlConnection connection = new SqlConnection(EntitySqlController._connectionDatabaseString);
+                connection.Open();
+
+                string query = File.ReadAllText(path);
+
+                List<string> batchList = query.Split("GO", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                try
+                {
+                    foreach (string batch in batchList)
+                    {
+                        using (SqlCommand command = new SqlCommand(batch, connection))
+                        {
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
                 }
             }
         }

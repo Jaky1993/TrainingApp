@@ -6,6 +6,9 @@ namespace TrainingAppData.DB.CONTROLLER
 {
     public class EntitySqlController : DatabaseController, IDatabaseController
     {
+        //I campi static readonly possono essere inizializzati solo al momento della dichiarazione
+        //o all'interno di un costruttore statico
+
         public static string _connectionDatabaseString;
         public static string _connectionSqlServerCreateDB;
         public static string _databaseName;

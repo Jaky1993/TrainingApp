@@ -54,4 +54,10 @@ using (var scope = app.Services.CreateScope())
     generateUserTable.GenerateTableFromFile("MODEL/SQL/User.sql", "User", "Schema");
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var generateStoreProcedureSelectMaxVersionId = scope.ServiceProvider.GetRequiredService<SQLServerDatabase>();
+    generateStoreProcedureSelectMaxVersionId.AddSelectMaxVersionId("MODEL/SQL/SelectMaxVersionId.sql");
+}
+
 app.Run();

@@ -4,7 +4,7 @@
     {
         //Use for validation
 
-        public List<string> UserValidation(User user)
+        public static List<string> UserValidation(User user)
         {
             List<string> errorList = new List<string>();
 

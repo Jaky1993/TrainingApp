@@ -29,13 +29,13 @@ namespace TrainingApp.Controllers
         }
 
         public abstract void DoCreate(T entity, U entityViewModel);
-        public abstract void DoUpdate(T entity, U entityViewModel);
+        public abstract ActionResult DoUpdate(T entity, U entityViewModel);
         public abstract void DoDelete(int id);
         public abstract T DoSelect(int id);
         public abstract T DoSelect(Guid guid);
         public abstract List<T> DoSelectList();
 
-        public virtual ActionResult Index(List<T> entityList)
+        public virtual ActionResult Index()
         {
             return View();
         }
@@ -46,13 +46,13 @@ namespace TrainingApp.Controllers
         Quando si utilizza il metodo, il comportamento effettivo è determinato dal tipo di oggetto a cui appartiene,
         non dal tipo della variabile che contiene il riferimento all'oggetto.
         */
-        public virtual ActionResult Create()
+        public virtual ActionResult Create(U entityViewModel)
         {
-            return View();
+            return View(entityViewModel);
         }
 
         [HttpPost]
-        public virtual ActionResult Create(U entityViewModel, List<string> errorList)
+        public virtual ActionResult Create(U entityViewModel, List<Tuple<string, string>> errorList)
         {
             return View();
         }

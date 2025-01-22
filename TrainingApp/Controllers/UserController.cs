@@ -44,34 +44,50 @@ namespace TrainingApp.Controllers
             return userList;
         }
 
-        public override void DoUpdate(User user, UserViewModel userViewModel)
+        public override ActionResult DoUpdate(User user, UserViewModel userViewModel)
         {
             user = _mapper.Map<User>(userViewModel);
 
             //Validation
-            List<string> errorList = TrainingAppData.MODEL.User.UserValidation(user);
+            List<Tuple<string,string>> errorList = TrainingAppData.MODEL.User.UserValidation(user);
 
-            if (errorList.Count != 0)
+            if (errorList.Count > 0)
             {
                 userViewModel = _mapper.Map<UserViewModel>(user);
 
-                Create(userViewModel, errorList);
+                return RedirectToAction("Create", "User", userViewModel);
+            }
+
+            if (user.Id == 0)
+            {
+                user.VersionId = 1;
+            }
+            else
+            {
+                user.VersionId = user.VersionId++;
+                user.UpdateDate = DateTime.Now;
             }
 
             _create.Create(user);
+
+            return RedirectToAction("Index", "User");
         }
 
-        public override ActionResult Index(List<User> entityList)
+        public override ActionResult Index()
         {
-            entityList = DoSelectList();
+            List<User> entityList = DoSelectList();
 
             List<UserViewModel> userViewModelList = _mapper.Map<List<UserViewModel>>(entityList);
 
             return View(userViewModelList);
         }
 
-        public override ActionResult Create(UserViewModel userViewModel, List<string> errorList)
+        public override ActionResult Create(UserViewModel userViewModel, List<Tuple<string,string>> errorList)
         {
+            User user = new User();
+
+            DoUpdate(user, userViewModel);
+
             ViewBag.Error = errorList;
 
             return View("Create", userViewModel);

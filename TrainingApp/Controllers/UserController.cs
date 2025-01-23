@@ -86,12 +86,13 @@ namespace TrainingApp.Controllers
             return View(userViewModelList);
         }
 
-        public override ActionResult Create(UserViewModel entityViewModel)
+        public override ActionResult Create(UserViewModel entityViewModel, List<Tuple<string,string>> errorList)
         {
             if (TempData["errorList"] != null)
             {
-                ViewBag.Error = JsonSerializer.Deserialize<List<Tuple<string, string>>>(TempData["errorList"].ToString());
-            }            
+                //ViewBag.Error = JsonSerializer.Deserialize<List<Tuple<string, string>>>(TempData["errorList"].ToString());
+                ViewBag.Error = JsonDeserializerErrorList(TempData["errorList"].ToString());
+            }
 
             return View("Create", entityViewModel);
         }

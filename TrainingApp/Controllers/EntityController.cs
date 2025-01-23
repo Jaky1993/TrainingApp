@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Cryptography;
+using System.Text.Json;
 using TrainingAppData.DB.INTERFACE;
 
 namespace TrainingApp.Controllers
@@ -45,9 +47,9 @@ namespace TrainingApp.Controllers
         un metodo virtuale è una funzione definita nella classe base e può essere sovrascritta nelle classi derivate.
         Quando si utilizza il metodo, il comportamento effettivo è determinato dal tipo di oggetto a cui appartiene,
         non dal tipo della variabile che contiene il riferimento all'oggetto.
+        if you do not override the virtual method in the derived class, the base class's virtual method will be called
         */
-
-        public virtual ActionResult Create(U entityViewModel)
+        public virtual ActionResult Create(U entityViewModel, List<Tuple<string, string>> errorList)
         {
             return View();
         }
@@ -55,6 +57,20 @@ namespace TrainingApp.Controllers
         public virtual ActionResult Edit(U entityViewModel)
         {
             return View();
+        }
+
+        public string JsonSerializerErrorList(List<Tuple<string,string>> errorList)
+        {
+            string jsonErrorList = JsonSerializer.Serialize(errorList);
+
+            return jsonErrorList;
+        }
+
+        public List<Tuple<string,string>> JsonDeserializerErrorList(string jsonErrorList)
+        {
+            List<Tuple<string,string>> content = JsonSerializer.Deserialize<List<Tuple<string,string>>>(jsonErrorList.ToString());
+
+            return content;
         }
     }
 }

@@ -1,14 +1,26 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Data;
 using System.Security.Cryptography;
 using System.Text.Json;
 using TrainingApp.VIEWMODEL;
 using TrainingAppData.DB.INTERFACE;
 using TrainingAppData.MODEL;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrainingApp.Controllers
 {
+    /*
+    The new() constraint in C# generics is used to specify that a type argument must have a public parameterless constructor.
+    This means that any class used as the type argument must define a public constructor that takes no arguments. 
+    This is useful when you need to create instances of the generic type within the generic class or method.
+    To summarize, the constraint where T : Entity, new () and where U : EntityViewModel, new () ensures that T and U
+    can be instantiated with a new keyword without any arguments.This is particularly useful when you need to create 
+    instances of these types within the generic class or method.
+    */
     public abstract class EntityController<T,U> : Controller where T : Entity, new() where U : EntityViewModel, new()
     {
         /*

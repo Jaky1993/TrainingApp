@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Cryptography;
 using System.Text.Json;
+using TrainingApp.VIEWMODEL;
 using TrainingAppData.DB.INTERFACE;
+using TrainingAppData.MODEL;
 
 namespace TrainingApp.Controllers
 {
-    public abstract class EntityController<T,U> : Controller
+    public abstract class EntityController<T,U> : Controller where T : Entity, new() where U : EntityViewModel, new()
     {
         /*
         La parola chiave readonly in C# è utilizzata per dichiarare un campo che può essere assegnato solo
@@ -29,8 +31,6 @@ namespace TrainingApp.Controllers
             _select = select;
             _mapper = mapper;
         }
-
-        public abstract void DoCreate(T entity, U entityViewModel);
         public abstract ActionResult DoUpdate(T entity, U entityViewModel);
         public abstract void DoDelete(int id);
         public abstract T DoSelect(int id);
@@ -54,9 +54,15 @@ namespace TrainingApp.Controllers
             return View();
         }
 
-        public virtual ActionResult Edit(U entityViewModel)
+        public virtual ActionResult Edit(int id)
         {
-            return View();
+            T entity = new T();
+
+            entity = DoSelect(id);
+
+            U entityViewModel = _mapper.Map<U>(entity);
+
+            return View(entityViewModel);
         }
 
         public string JsonSerializerErrorList(List<Tuple<string,string>> errorList)

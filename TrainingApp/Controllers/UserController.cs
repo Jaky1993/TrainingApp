@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.ConstrainedExecution;
 using System.Text.Json;
 using TrainingApp.VIEWMODEL;
 using TrainingAppData.DB.INTERFACE;
@@ -7,6 +8,15 @@ using TrainingAppData.MODEL;
 
 namespace TrainingApp.Controllers
 {
+    /*
+    Sì, esattamente.In ASP.NET MVC e ASP.NET Core, per ogni richiesta HTTP viene creato un nuovo oggetto del controller.
+    Questo fa parte del ciclo di vita delle richieste che consente la costruzione di applicazioni web stateless.
+    Ogni volta che viene effettuata una richiesta a un controller, un nuovo istanza di tale controller viene instanziata,
+    gestendo la richiesta e poi eliminata una volta completata l'elaborazione.
+    Dunque, ogni volta che fai una richiesta, come ad esempio un RedirectToAction,
+    viene creata una nuova istanza di EntityController e UserController.
+    */
+
     public class UserController : EntityController<User, UserViewModel>
     {
         //when you create a subclass that inherits from a base class,
@@ -16,11 +26,6 @@ namespace TrainingApp.Controllers
 
         }
 
-        public override void DoCreate(User entity, UserViewModel entityViewModel)
-        {       
-            _create.Create(entity);
-        }
-
         public override void DoDelete(int id)
         {
 
@@ -28,7 +33,9 @@ namespace TrainingApp.Controllers
 
         public override User DoSelect(int id)
         {
-            throw new NotImplementedException();
+            User user = _select.Select(id);
+
+            return user;
         }
 
         public override User DoSelect(Guid guid)
@@ -57,7 +64,7 @@ namespace TrainingApp.Controllers
             {
                 userViewModel = _mapper.Map<UserViewModel>(user);
 
-                TempData["errorList"] = JsonSerializer.Serialize(errorList);
+                //TempData["errorList"] = JsonSerializer.Serialize(errorList);
 
                 return RedirectToAction("Create","User", userViewModel);
             }
@@ -90,7 +97,6 @@ namespace TrainingApp.Controllers
         {
             if (TempData["errorList"] != null)
             {
-                //ViewBag.Error = JsonSerializer.Deserialize<List<Tuple<string, string>>>(TempData["errorList"].ToString());
                 ViewBag.Error = JsonDeserializerErrorList(TempData["errorList"].ToString());
             }
 

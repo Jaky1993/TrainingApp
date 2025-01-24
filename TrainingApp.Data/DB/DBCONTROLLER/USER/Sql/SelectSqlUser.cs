@@ -102,9 +102,9 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
                         
                         user.Email = reader.GetString(reader.GetOrdinal("Email"));
                         user.UserName = reader.GetString(reader.GetOrdinal("UserName"));
-                        user.Age = reader.GetInt16(reader.GetOrdinal("Age"));
+                        user.Age = reader.GetByte(reader.GetOrdinal("Age"));
                         //user.password TODO
-                        user.VersionId = reader.GetInt32(reader.GetOrdinal("VersionId"));
+                        user.VersionId = reader.GetInt16(reader.GetOrdinal("VersionId"));
                     }
                 }
             }

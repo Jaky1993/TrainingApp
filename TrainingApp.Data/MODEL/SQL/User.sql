@@ -22,13 +22,13 @@ CREATE TABLE [User]
 	[UserName] varchar(50),
 	[Age] tinyint,
 	[Password] nvarchar(100),
-	[VersionId] smallint
+	[VersionId] smallint NOT NULL
 )
 
 GO
 
 ALTER TABLE [User]
-ADD CONSTRAINT PK_USERTABLE PRIMARY KEY ([Id])
+ADD CONSTRAINT PK_USERTABLE PRIMARY KEY ([Id],[VersionId])
 
 GO
 
@@ -41,27 +41,32 @@ GO
 
 CREATE PROCEDURE [SelectUserById](@Id int) AS 
 BEGIN
-	select * from [User] where [User].Id = @Id AND [User].DeleteDate IS NULL
+	select * from [User] where [User].Id = @Id AND [User].DeleteDate IS NULL AND [User].VersionId = (select MAX([User].VersionId) from [User] where [User].Id = @Id)
 END
 
 GO
 
 CREATE PROCEDURE [SelectUserByGuid](@Guid uniqueidentifier) AS 
 BEGIN
-	select * from [User] where [User].Guid = @Guid AND [User].DeleteDate IS NULL
+	select * from [User] where [User].Guid = @Guid AND [User].DeleteDate IS NULL AND [User].VersionId = (select MAX([User].VersionId) from [User] where [User].Guid = @Guid)
 END
 
 GO 
 
 CREATE PROCEDURE [SelectUserList] AS
 BEGIN
-	select * from [User] where [User].DeleteDate IS NULL
+	SELECT * FROM
+	(
+		SELECT *, (ROW_NUMBER() OVER(partition by [User].Id order by [User].VersionId DESC)) as rowNumber FROM [User] WHERE [User].DeleteDate IS NULL
+	) as ResultPartitionUser
+	WHERE rowNumber = 1
 END
 
 GO
 
 CREATE PROCEDURE [CreateUser]
 (
+	@Id int = NULL,
 	@Guid uniqueidentifier,
 	@Name varchar(50),
 	@Description varchar(100),
@@ -74,8 +79,18 @@ CREATE PROCEDURE [CreateUser]
 	@VersionId smallint
 ) AS
 BEGIN
-	INSERT INTO [User] (Guid, Name, Description, UpdateDate, DeleteDate, Email, UserName, Age, Password, VersionId)
-	VALUES (@Guid, @Name, @Description, @UpdateDate, @DeleteDate, @Email, @UserName, @Age, @Password, @VersionId)
+	IF (@UpdateDate IS NULL)
+	BEGIN
+		INSERT INTO [User] (Guid, Name, Description, UpdateDate, DeleteDate, Email, UserName, Age, Password, VersionId)
+		VALUES (@Guid, @Name, @Description, @UpdateDate, @DeleteDate, @Email, @UserName, @Age, @Password, @VersionId)
+	END
+	ELSE
+	BEGIN
+		SET IDENTITY_INSERT [User] ON;
+		INSERT INTO [User] (Id, Guid, Name, Description, UpdateDate, DeleteDate, Email, UserName, Age, Password, VersionId)
+		VALUES (@Id, @Guid, @Name, @Description, @UpdateDate, @DeleteDate, @Email, @UserName, @Age, @Password, @VersionId)
+		SET IDENTITY_INSERT [User] OFF;
+	END
 END
 
 GO

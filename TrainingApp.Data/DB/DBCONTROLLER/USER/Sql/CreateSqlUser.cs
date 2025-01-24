@@ -25,6 +25,11 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "CreateUser";
 
+                if(entity.UpdateDate != DateTime.MinValue)
+                {
+                    command.Parameters.AddWithValue("Id", entity.Id);
+                }
+
                 command.Parameters.AddWithValue("Guid", Guid.NewGuid());
                 command.Parameters.AddWithValue("Name", entity.Name);
                 command.Parameters.AddWithValue("Description", entity.Description);

@@ -64,7 +64,7 @@ namespace TrainingApp.Controllers
             {
                 userViewModel = _mapper.Map<UserViewModel>(user);
 
-                //TempData["errorList"] = JsonSerializer.Serialize(errorList);
+                TempData["errorList"] = JsonSerializer.Serialize(errorList);
 
                 return RedirectToAction("Create","User", userViewModel);
             }
@@ -75,7 +75,7 @@ namespace TrainingApp.Controllers
             }
             else
             {
-                user.VersionId = user.VersionId++;
+                user.VersionId = user.VersionId + 1;
                 user.UpdateDate = DateTime.Now;
             }
 

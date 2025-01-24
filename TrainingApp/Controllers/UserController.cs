@@ -65,6 +65,11 @@ namespace TrainingApp.Controllers
             return View(userViewModelList);
         }
 
+        public ActionResult UserIndex(int id)
+        {
+            return View("UserIndex");
+        }
+
         public override ActionResult Create(UserViewModel entityViewModel, List<Tuple<string,string>> errorList)
         {
             if (TempData["errorList"] != null)

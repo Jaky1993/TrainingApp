@@ -1,6 +1,6 @@
 ﻿namespace TrainingAppData.MODEL
 {
-    public partial class User : Entity
+    public partial class User : Entity<User>
     {
         public string Email { get; set; }
         public string UserName { get; set; }

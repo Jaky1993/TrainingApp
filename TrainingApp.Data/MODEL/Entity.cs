@@ -1,6 +1,6 @@
 ﻿namespace TrainingAppData.MODEL
 {
-    public abstract class Entity
+    public abstract partial class Entity<T>
     {
         public Guid Guid { get; set; }
         public int Id { get; set; }

@@ -21,7 +21,7 @@ namespace TrainingApp.Controllers
     can be instantiated with a new keyword without any arguments.This is particularly useful when you need to create 
     instances of these types within the generic class or method.
     */
-    public abstract class EntityController<T,U> : Controller where T : Entity, new() where U : EntityViewModel, new()
+    public abstract class EntityController<T,U> : Controller where T : Entity<T>, new() where U : EntityViewModel, new()
     {
         /*
         La parola chiave readonly in C# è utilizzata per dichiarare un campo che può essere assegnato solo
@@ -43,7 +43,41 @@ namespace TrainingApp.Controllers
             _select = select;
             _mapper = mapper;
         }
-        public abstract ActionResult DoUpdate(T entity, U entityViewModel);
+
+        [HttpPost]
+        public ActionResult DoUpdate(T entity, U entityViewModel)
+        {
+            entity = _mapper.Map<T>(entityViewModel);
+
+            string viewName = entity.GetType().Name;
+
+            //Validation
+
+            List<Tuple<string, string>> errorList = entity.DataValidation(entity);
+
+            if (errorList.Count > 0)
+            {
+                entityViewModel = _mapper.Map<U>(entity);
+
+                TempData["errorList"] = JsonSerializer.Serialize(errorList);
+
+                return RedirectToAction("Create", viewName, entityViewModel);
+            }
+
+            if (entity.Id == 0)
+            {
+                entity.VersionId = 1;
+            }
+            else
+            {
+                entity.VersionId = entity.VersionId + 1;
+                entity.UpdateDate = DateTime.Now;
+            }
+
+            _create.Create(entity);
+
+            return RedirectToAction("Index", viewName);
+        }
         public abstract void DoDelete(int id);
         public abstract T DoSelect(int id);
         public abstract T DoSelect(Guid guid);

@@ -1,10 +1,10 @@
 ﻿namespace TrainingAppData.MODEL
 {
-    public partial class User : Entity
+    public partial class User : Entity<User>
     {
         //Use for validation
 
-        public static List<Tuple<string,string>> UserValidation(User user)
+        public override List<Tuple<string,string>> DataValidation(User user)
         {
             List<Tuple<string,string>> errorList = new List<Tuple<string,string>>();
 

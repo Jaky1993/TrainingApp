@@ -52,6 +52,7 @@ namespace TrainingApp.Controllers
             return userList;
         }
 
+        /*
         [HttpPost]
         public override ActionResult DoUpdate(User user, UserViewModel userViewModel)
         {
@@ -83,6 +84,7 @@ namespace TrainingApp.Controllers
 
             return RedirectToAction("Index", "User");
         }
+        */
 
         public override ActionResult Index()
         {

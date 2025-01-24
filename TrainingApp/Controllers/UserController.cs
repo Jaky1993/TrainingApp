@@ -26,9 +26,13 @@ namespace TrainingApp.Controllers
 
         }
 
-        public override void DoDelete(int id)
+        public override ActionResult DoDelete(int id)
         {
+            DateTime deleteDate = DateTime.Now;
 
+            _delete.Delete(id, deleteDate);
+
+            return RedirectToAction("Index", "User");
         }
 
         public override User DoSelect(int id)
@@ -51,40 +55,6 @@ namespace TrainingApp.Controllers
 
             return userList;
         }
-
-        /*
-        [HttpPost]
-        public override ActionResult DoUpdate(User user, UserViewModel userViewModel)
-        {
-            user = _mapper.Map<User>(userViewModel);
-
-            //Validation
-            List<Tuple<string,string>> errorList = TrainingAppData.MODEL.User.UserValidation(user);
-
-            if (errorList.Count > 0)
-            {
-                userViewModel = _mapper.Map<UserViewModel>(user);
-
-                TempData["errorList"] = JsonSerializer.Serialize(errorList);
-
-                return RedirectToAction("Create","User", userViewModel);
-            }
-
-            if (user.Id == 0)
-            {
-                user.VersionId = 1;
-            }
-            else
-            {
-                user.VersionId = user.VersionId + 1;
-                user.UpdateDate = DateTime.Now;
-            }
-
-            _create.Create(user);
-
-            return RedirectToAction("Index", "User");
-        }
-        */
 
         public override ActionResult Index()
         {

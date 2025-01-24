@@ -78,7 +78,7 @@ namespace TrainingApp.Controllers
 
             return RedirectToAction("Index", viewName);
         }
-        public abstract void DoDelete(int id);
+        public abstract ActionResult DoDelete(int id);
         public abstract T DoSelect(int id);
         public abstract T DoSelect(Guid guid);
         public abstract List<T> DoSelectList();

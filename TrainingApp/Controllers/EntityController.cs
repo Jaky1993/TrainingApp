@@ -45,7 +45,7 @@ namespace TrainingApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult DoUpdate(T entity, U entityViewModel)
+        public async Task<ActionResult> DoUpdate(T entity, U entityViewModel)
         {
             entity = _mapper.Map<T>(entityViewModel);
 
@@ -74,33 +74,33 @@ namespace TrainingApp.Controllers
                 entity.UpdateDate = DateTime.Now;
             }
 
-            _create.Create(entity);
+            await _create.Create(entity);
 
             return RedirectToAction("List", viewName);
         }
         public abstract ActionResult DoDelete(int id);
-        public abstract T DoSelect(int id);
+        public abstract Task<T> DoSelect(int id);
         public abstract T DoSelect(Guid guid);
-        public virtual List<T> DoSelectList()
+        public virtual async Task<List<T>> DoSelectList()
         {
             List<T> entityList = new();
 
-            entityList = _select.SelectList();
+            entityList = await _select.SelectList();
 
             return entityList;
         }
-        public virtual ActionResult List()
+        public virtual async Task<ActionResult> List()
         {
-            List<T> entityList = DoSelectList();
+            List<T> entityList = await DoSelectList();
 
             List<U> entityViewModelList = _mapper.Map<List<U>>(entityList);
 
             return View("List", entityViewModelList);
         }
 
-        public virtual ActionResult Index(int id)
+        public virtual async Task<ActionResult> Index(int id)
         {
-            T entity = DoSelect(id);
+            T entity = await DoSelect(id);
 
             U entityViewModel = _mapper.Map<U>(entity);
 
@@ -119,11 +119,11 @@ namespace TrainingApp.Controllers
             return View();
         }
 
-        public virtual ActionResult Edit(int id)
+        public virtual async Task<ActionResult> Edit(int id)
         {
             T entity = new T();
 
-            entity = DoSelect(id);
+            entity = await DoSelect(id);
 
             U entityViewModel = _mapper.Map<U>(entity);
 

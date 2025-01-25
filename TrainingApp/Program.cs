@@ -29,6 +29,8 @@ builder.Services.AddScoped(typeof(IUpdate<User>), typeof(UpdateSqlUser));
 builder.Services.AddScoped(typeof(IDelete<User>), typeof(DeleteSqlUser));
 builder.Services.AddScoped(typeof(ISelect<User>), typeof(SelectSqlUser));
 
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,7 +41,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseHttpsRedirection();
+
 app.UseRouting();
 
 app.UseAuthorization();

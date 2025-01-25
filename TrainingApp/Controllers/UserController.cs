@@ -35,9 +35,9 @@ namespace TrainingApp.Controllers
             return RedirectToAction("List", "User");
         }
 
-        public override User DoSelect(int id)
+        public override async Task<User> DoSelect(int id)
         {
-            User user = _select.Select(id);
+            User user = await _select.Select(id);
 
             return user;
         }

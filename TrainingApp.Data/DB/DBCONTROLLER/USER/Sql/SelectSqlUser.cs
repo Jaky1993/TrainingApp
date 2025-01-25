@@ -9,7 +9,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
 {
     public class SelectSqlUser : ISelect<User>
     {
-        public User Select(Guid guid)
+        public async Task<User> Select(Guid guid)
         {
             User user = new User();
 
@@ -29,7 +29,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
             try
             {
                 //Execute the command and process the results
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     if (reader.Read())
                     {
@@ -60,7 +60,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
             return user;
         }
 
-        public User Select(int id)
+        public async Task<User> Select(int id)
         {
             User user = new User();
 
@@ -80,7 +80,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
             try
             {
                 //Execute the command and process the results
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     if (reader.Read())
                     {
@@ -120,7 +120,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
             return user;
         }
 
-        public List<User> SelectList()
+        public async Task<List<User>> SelectList()
         {
             EntitySqlController entitySqlController = new EntitySqlController();
 
@@ -137,7 +137,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
 
             try
             {
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     //reader.Read() -> the loop will correctly iterate through each row in the SqlDataReader
                     /*

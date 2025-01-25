@@ -8,7 +8,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
 {
     public class CreateSqlUser : ICreate<User>
     {
-        public void Create(User entity)
+        public async Task Create(User entity)
         {
             EntitySqlController entitySqlController = new EntitySqlController();
             SqlConnection connection = new SqlConnection(EntitySqlController._connectionDatabaseString);
@@ -60,7 +60,7 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
                 command.Parameters.AddWithValue("Password", "testPassword");
                 command.Parameters.AddWithValue("VersionId", entity.VersionId);
 
-                command.ExecuteNonQuery();
+                await command.ExecuteNonQueryAsync();
 
                 transaction.Commit();
             }

@@ -2,6 +2,6 @@
 {
     public interface ICreate<T>
     {
-        void Create(T entity);
+        Task Create(T entity);
     }
 }

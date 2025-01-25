@@ -76,16 +76,35 @@ namespace TrainingApp.Controllers
 
             _create.Create(entity);
 
-            return RedirectToAction("Index", viewName);
+            return RedirectToAction("List", viewName);
         }
         public abstract ActionResult DoDelete(int id);
         public abstract T DoSelect(int id);
         public abstract T DoSelect(Guid guid);
-        public abstract List<T> DoSelectList();
-
-        public virtual ActionResult Index()
+        public virtual List<T> DoSelectList()
         {
-            return View();
+            List<T> entityList = new();
+
+            entityList = _select.SelectList();
+
+            return entityList;
+        }
+        public virtual ActionResult List()
+        {
+            List<T> entityList = DoSelectList();
+
+            List<U> entityViewModelList = _mapper.Map<List<U>>(entityList);
+
+            return View("List", entityViewModelList);
+        }
+
+        public virtual ActionResult Index(int id)
+        {
+            T entity = DoSelect(id);
+
+            U entityViewModel = _mapper.Map<U>(entity);
+
+            return View("Index", entityViewModel);
         }
 
         /*

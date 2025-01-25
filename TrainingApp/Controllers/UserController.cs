@@ -32,7 +32,7 @@ namespace TrainingApp.Controllers
 
             _delete.Delete(id, deleteDate);
 
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("List", "User");
         }
 
         public override User DoSelect(int id)
@@ -45,29 +45,6 @@ namespace TrainingApp.Controllers
         public override User DoSelect(Guid guid)
         {
             throw new NotImplementedException();
-        }
-
-        public override List<User> DoSelectList()
-        {
-            List<User> userList = new();
-
-            userList = _select.SelectList();
-
-            return userList;
-        }
-
-        public override ActionResult Index()
-        {
-            List<User> entityList = DoSelectList();
-
-            List<UserViewModel> userViewModelList = _mapper.Map<List<UserViewModel>>(entityList);
-
-            return View(userViewModelList);
-        }
-
-        public ActionResult UserIndex(int id)
-        {
-            return View("UserIndex");
         }
 
         public override ActionResult Create(UserViewModel entityViewModel, List<Tuple<string,string>> errorList)

@@ -33,7 +33,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td><a asp-action="UserIndex" asp-route-id="@item.Id">@item.Name</a></td>
+                    <td><a asp-action="Index" asp-route-id="@item.Id">@item.Name</a></td>
                     <td>@item.Email</td>
                     <td>@item.UserName</td>
                     <td>@item.Age</td>

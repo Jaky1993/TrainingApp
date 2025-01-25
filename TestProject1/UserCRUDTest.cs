@@ -31,7 +31,7 @@ public class UserCRUDTest
     }
 
     [TestMethod]
-    public void TestSelectUserByGuid()
+    public async Task TestSelectUserByGuid()
     {
         SelectSqlUser selectUser = new SelectSqlUser();
 
@@ -39,14 +39,14 @@ public class UserCRUDTest
 
         Guid guid = Guid.Parse("A5E33AFD-9AA0-4C98-A836-550CF0106665");
 
-        user = selectUser.Select(guid);
+        user = await selectUser.Select(guid);
     }
 
     [TestMethod]
-    public void TestSelectUserList()
+    public async Task TestSelectUserList()
     {
         SelectSqlUser selectUserList = new SelectSqlUser();
 
-        List<User> userList = selectUserList.SelectList();
+        List<User> userList = await selectUserList.SelectList();
     }
 }

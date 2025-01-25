@@ -9,18 +9,14 @@
   <ItemGroup>
     <Content Remove="Properties\launchSettings-app - Copia.json" />
     <Content Remove="Properties\launchSettings-app.json" />
-    <Content Remove="Properties\launchSettings-swagger - Copia.json" />
+    <Content Remove="Properties\launchSettings-multiple.json" />
+    <Content Remove="Properties\launchSettings-multiple2.json" />
     <Content Remove="Properties\launchSettings-swagger.json" />
     <Content Remove="Properties\launchSettings.json" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Properties\launchSettings-app - Copia.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-    <None Include="Properties\launchSettings-swagger - Copia.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>

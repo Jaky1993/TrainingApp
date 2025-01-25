@@ -56,8 +56,8 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    name: "user",
+    pattern: "{controller=User}/{action=List}")
     .WithStaticAssets();
 
 

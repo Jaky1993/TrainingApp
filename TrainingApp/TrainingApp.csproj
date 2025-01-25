@@ -10,7 +10,7 @@
     <Content Remove="Properties\launchSettings-app - Copia.json" />
     <Content Remove="Properties\launchSettings-app.json" />
     <Content Remove="Properties\launchSettings-multiple.json" />
-    <Content Remove="Properties\launchSettings-multiple2.json" />
+    <Content Remove="Properties\launchSettings-swagger-3.json" />
     <Content Remove="Properties\launchSettings-swagger.json" />
     <Content Remove="Properties\launchSettings.json" />
   </ItemGroup>

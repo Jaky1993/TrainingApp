@@ -30,7 +30,15 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
                     command.Parameters.AddWithValue("Id", entity.Id);
                 }
 
-                command.Parameters.AddWithValue("Guid", Guid.NewGuid());
+                if (entity.UpdateDate != DateTime.MinValue)
+                {
+                    command.Parameters.AddWithValue("Guid", entity.Guid);
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("Guid", Guid.NewGuid());
+                }
+
                 command.Parameters.AddWithValue("Name", entity.Name);
                 command.Parameters.AddWithValue("Description", entity.Description);
 
@@ -74,7 +82,6 @@ namespace TrainingAppData.DB.DBCONTROLLER.USER.Sql
                 connection.Close();
                 transaction.Dispose();
             }
-
         }
     }
 }

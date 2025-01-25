@@ -98,53 +98,18 @@ namespace TrainingApp.API.ApiControllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)] //ritorna un villa model vuoto
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> CreateVilla([FromBody] VillaCreateDTO createDTO)
-        {
-            try
-            {
-                if (await _dbVilla.GetAsync(v => v.Name.ToLower() == createDTO.Name.ToLower()) != null)
-                {
-                    ModelState.AddModelError("CustomError", "Villa already exists!");
-                    return BadRequest(ModelState);
-                }
-
-                if (createDTO == null)
-                {
-                    return BadRequest(createDTO);
-                }
-
-                Villa villa = _mapper.Map<Villa>(createDTO);
-
-                await _dbVilla.CreateAsync(villa);
-
-                _response.Result = _mapper.Map<VillaDTO>(villa);
-                _response.StatusCode = HttpStatusCode.Created;
-
-                return CreatedAtRoute("GetVilla", new { id = villa.Id }, _response);
-            }
-            catch (Exception ex)
-            {
-                _response.IsSucces = false;
-                _response.ErrorMessage = new List<string> { ex.ToString() };
-            }
-
-            return _response;
-        }
-
-        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         //Questo stato viene utilizzato per segnalare che la richiesta inviata dal client è invalida
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //Non vengono trovati elementi
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> CreateUser(UserViewModel userViewModel)
+        public async Task<ActionResult<ApiResponse>> CreateUser(UserViewModel userViewModel)
         {
             try
             {
-                if (await _select.Select(userViewModel.Id) != null)
+                List<User> userList = await _select.SelectList();
+
+                if (userList.Find(U => U.Id == userViewModel.Id) != null)
                 {
                     _response.ApiErrorList = new List<string> { "User already exist" };
 
@@ -158,11 +123,92 @@ namespace TrainingApp.API.ApiControllers
 
                 User user = _mapper.Map<User>(userViewModel);
 
+                user.VersionId = 1;
+
                 await _create.Create(user);
+
+                _response.Result = _mapper.Map<UserViewModel>(user);
+                _response.StatusCode = HttpStatusCode.Created;
             }
-            catch (Exception)
-            
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ApiErrorList = new List<string> { ex.Message };
+            }
+
+            /*
+            Sì, hai ragione. Anche se il codice entra nel blocco catch, alla fine restituisce comunque _response.
+            Questo perché l'istruzione return _response; si trova al di fuori sia del blocco try che del blocco catch,
+            quindi sarà eseguita sempre.
+            Se desideri restituire una risposta diversa in caso di un'eccezione,
+            dovrai includere un’istruzione return anche nel blocco catch
+            */
+
+            return _response;
         }
+
+        /*
+        In questo esempio, l'annotazione [FromBody] viene utilizzata per specificare che il userViewModel
+        deve essere deserializzato dal corpo della richiesta HTTP. 
+        */
+        [HttpPut(Name = "UpdateVilla")]
+        public async Task<ActionResult<ApiResponse>> UpdateVilla([FromBody] UserViewModel userViewModel)
+        {
+            try
+            {
+                if (userViewModel == null)
+                {
+                    return BadRequest();
+                }
+
+                User user = _mapper.Map<User>(userViewModel);
+
+                user.VersionId = user.VersionId + 1;
+                user.UpdateDate = DateTime.Now;
+
+                await _create.Create(user);
+
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.NoContent;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Result = new List<string> { ex.Message };
+            }
+
+            return _response;
+        }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpDelete("id:int", Name = "DeleteVilla")]
+        public async Task<ActionResult<ApiResponse>> DeleteUser(int id)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return BadRequest();
+                }
+
+                DateTime deleteDate = DateTime.Now;
+
+                _delete.Delete(id, deleteDate);
+
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.NoContent;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ApiErrorList = new List<string> { ex.Message };
+            }
+
+            return _response;
+        }
+
 
     }
 }

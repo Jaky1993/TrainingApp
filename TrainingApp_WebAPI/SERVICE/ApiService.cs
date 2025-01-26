@@ -92,16 +92,17 @@ namespace TrainingApp_WebAPI.SERVICE
             }
             catch (Exception ex)
             {
-                var errorResult = new ApiResponse
+                var errorResponse = new ApiResponse
                 {
                     ApiErrorList = new List<string> { Convert.ToString(ex.Message) },
                     IsSuccess = false
                 };
 
-                var res = JsonConvert.SerializeObject(errorResult);
-                var ApiResponse = JsonConvert.DeserializeObject<T>(res);
+                var result = JsonConvert.SerializeObject(errorResponse);
 
-                return ApiResponse;
+                T response = JsonConvert.DeserializeObject<T>(result);
+
+                return response;
             }
         }
     }

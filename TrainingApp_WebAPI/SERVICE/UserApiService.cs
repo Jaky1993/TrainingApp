@@ -49,7 +49,17 @@ namespace TrainingApp_WebAPI.SERVICE
 
             return SendAsync<T>(apiRequest);
         }
+        /*
+        Task<T>: Il tipo Task<T> rappresenta un'operazione asincrona che può restituire un valore del tipo T.
+        Questo è comunemente usato con i metodi asincroni. Per esempio, se T fosse string,
+        allora Task<string> rappresenterebbe un'operazione asincrona che restituirà una stringa
 
+        GetAllAsync<T>: GetAllAsync<T> è un metodo asincrono generico che restituisce un Task<T>.
+        La parte "Async" nel nome del metodo è una convenzione che indica che il metodo è asincrono.
+        Mettere <T> dopo GetAllAsync nel metodo GetAllAsync<T> è necessario per dichiarare
+        che il metodo è generico. Questo dichiara che il metodo può operare su qualsiasi tipo 
+        di dati specificato al momento della chiamata del metodo
+        */
         public Task<T> GetAllAsync<T>()
         {
             ApiRequest apiRequest = new ApiRequest();

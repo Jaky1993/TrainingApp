@@ -1,7 +1,7 @@
 ﻿using System.Security.AccessControl;
 using static Utility.ApiLibrary;
 
-namespace TrainingApp_WebAPI.Models.API
+namespace TrainingApp_WebAPI.MODEL.API
 {
     public class ApiRequest
     {

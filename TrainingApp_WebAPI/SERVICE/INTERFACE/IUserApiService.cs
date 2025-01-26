@@ -1,4 +1,6 @@
-﻿using TrainingApp.VIEWMODEL;
+﻿
+
+using TrainingApp_WebAPI.VIEWMODEL;
 
 namespace TrainingApp_WebAPI.SERVICE.INTERFACE
 {

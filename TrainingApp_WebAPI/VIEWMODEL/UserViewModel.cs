@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace TrainingApp.VIEWMODEL
+namespace TrainingApp_WebAPI.VIEWMODEL
 {
     public class UserViewModel : EntityViewModel
     {

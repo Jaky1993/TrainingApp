@@ -1,4 +1,4 @@
-﻿namespace TrainingApp.VIEWMODEL
+﻿namespace TrainingApp_WebAPI.VIEWMODEL
 {
     public abstract class EntityViewModel
     {

@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Security.AccessControl;
 using System.Text;
-using TrainingApp.API.Model;
-using TrainingApp_WebAPI.Models.API;
+using TrainingApp_WebAPI.MODEL.API;
 using TrainingApp_WebAPI.SERVICE.INTERFACE;
 using Utility;
 using static System.Net.Mime.MediaTypeNames;

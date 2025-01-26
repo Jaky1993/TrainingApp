@@ -1,5 +1,4 @@
-﻿using TrainingApp.API.Model;
-using TrainingApp_WebAPI.Models.API;
+﻿using TrainingApp_WebAPI.MODEL.API;
 
 namespace TrainingApp_WebAPI.SERVICE.INTERFACE
 {

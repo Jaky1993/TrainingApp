@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Runtime.ConstrainedExecution;
-using TrainingApp.VIEWMODEL;
-using TrainingApp_WebAPI.Models.API;
+using TrainingApp_WebAPI.MODEL.API;
 using TrainingApp_WebAPI.SERVICE.INTERFACE;
+using TrainingApp_WebAPI.VIEWMODEL;
 using static Utility.ApiLibrary;
 
 namespace TrainingApp_WebAPI.SERVICE
@@ -34,7 +34,7 @@ namespace TrainingApp_WebAPI.SERVICE
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.POST;
-            apiRequest.Url = url + "api/TrainingAppAPI";
+            apiRequest.Url = url + "/api/TrainingAppAPI";
             apiRequest.Data = userViewModel;
 
             return SendAsync<T>(apiRequest);
@@ -45,7 +45,7 @@ namespace TrainingApp_WebAPI.SERVICE
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.DELETE;
-            apiRequest.Url = url + "api/TrainingAppAPI/id:int?id=" + id;
+            apiRequest.Url = url + "/api/TrainingAppAPI/id:int?id=" + id;
 
             return SendAsync<T>(apiRequest);
         }
@@ -55,7 +55,7 @@ namespace TrainingApp_WebAPI.SERVICE
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.GET;
-            apiRequest.Url = url + "api/TrainingAppAPI";
+            apiRequest.Url = url + "/api/TrainingAppAPI";
 
             return SendAsync<T>(apiRequest);
         }
@@ -65,7 +65,7 @@ namespace TrainingApp_WebAPI.SERVICE
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.GET;
-            apiRequest.Url = url + "api/TrainingAppAPI/id:int?id=" + id;
+            apiRequest.Url = url + "/api/TrainingAppAPI/id:int?id=" + id;
 
             return SendAsync<T>(apiRequest);
         }
@@ -75,7 +75,7 @@ namespace TrainingApp_WebAPI.SERVICE
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.PUT;
-            apiRequest.Url = url + "api/TrainingAppAPI";
+            apiRequest.Url = url + "/api/TrainingAppAPI";
             apiRequest.Data = userViewModel;
 
             return SendAsync<T>(apiRequest);

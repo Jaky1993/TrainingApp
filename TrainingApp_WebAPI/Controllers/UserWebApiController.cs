@@ -24,7 +24,7 @@ namespace TrainingApp_WebAPI.Controllers
         {
             List<UserViewModel> userViewModelList = new();
 
-            var response = await _userApiService.GetAllAsync<ApiResponse>();
+            ApiResponse response = await _userApiService.GetAllAsync<ApiResponse>();
 
             if (response != null && response.IsSuccess)
             {

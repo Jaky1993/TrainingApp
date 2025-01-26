@@ -85,9 +85,10 @@ namespace TrainingApp_WebAPI.SERVICE
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
 
                 //deserialize the content in object of type T
-                var ApiResponse = JsonConvert.DeserializeObject<T>(apiContent);
+                
+                T response = JsonConvert.DeserializeObject<T>(apiContent);
 
-                return ApiResponse;
+                return response;
             }
             catch (Exception ex)
             {

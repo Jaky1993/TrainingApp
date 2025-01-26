@@ -151,8 +151,8 @@ namespace TrainingApp.API.ApiControllers
         In questo esempio, l'annotazione [FromBody] viene utilizzata per specificare che il userViewModel
         deve essere deserializzato dal corpo della richiesta HTTP. 
         */
-        [HttpPut(Name = "UpdateVilla")]
-        public async Task<ActionResult<ApiResponse>> UpdateVilla([FromBody] UserViewModel userViewModel)
+        [HttpPut(Name = "UpdateUser")]
+        public async Task<ActionResult<ApiResponse>> UpdateUser([FromBody] UserViewModel userViewModel)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace TrainingApp.API.ApiControllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpDelete("id:int", Name = "DeleteVilla")]
+        [HttpDelete("id:int", Name = "DeleteUser")]
         public async Task<ActionResult<ApiResponse>> DeleteUser(int id)
         {
             try

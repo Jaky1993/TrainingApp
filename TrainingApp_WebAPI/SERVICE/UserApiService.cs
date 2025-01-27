@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Runtime.ConstrainedExecution;
+using TrainingApp_WebAPI.MODEL;
 using TrainingApp_WebAPI.MODEL.API;
 using TrainingApp_WebAPI.SERVICE.INTERFACE;
 using TrainingApp_WebAPI.VIEWMODEL;
@@ -10,7 +11,6 @@ namespace TrainingApp_WebAPI.SERVICE
     public class UserApiService : ApiService, IUserApiService
     {
         private string url;
-        private IHttpClientFactory _httpClient;
 
         //base(httpClient) -> assicura che il costruttore di ApiService venga chiamato con il parametro httpClient.
         //Questa chiamata è necessaria per completare l'inizializzazione iniziata dal costruttore di ApiService.
@@ -23,31 +23,35 @@ namespace TrainingApp_WebAPI.SERVICE
         Mantiene l'Iniezione delle Dipendenze: Le dipendenze iniettate nella classe base sono disponibili
         per la classe derivata.
         */
+        /*
+        In pratica, il costruttore della classe derivata deve avere tutti i parametri richiesti per inizializzare
+        sia sé stessa che la classe base. Anche se la classe base gestisce l'istanza di IHttpClientFactory,
+        devi comunque passargliela dall'esterno affinché possa essere correttamente inizializzata.
+        */
         public UserApiService(IConfiguration configuration, IHttpClientFactory httpClient) : base(httpClient)
         {
             url = configuration.GetValue<string>("ServiceUrls:TrainingAPI");
-            _httpClient = httpClient;
         }
 
-        public Task<T> CreateAsync<T>(UserViewModel userViewModel)
+        public Task<Z> CreateAsync<Z>(User user)
         {
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.POST;
             apiRequest.Url = url + "/api/TrainingAppAPI";
-            apiRequest.Data = userViewModel;
+            apiRequest.Data = user;
 
-            return SendAsync<T>(apiRequest);
+            return SendAsync<Z>(apiRequest);
         }
 
-        public Task<T> DeleteAsync<T>(int id)
+        public Task<Z> DeleteAsync<Z>(int id)
         {
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.DELETE;
             apiRequest.Url = url + "/api/TrainingAppAPI/id:int?id=" + id;
 
-            return SendAsync<T>(apiRequest);
+            return SendAsync<Z>(apiRequest);
         }
         /*
         Task<T>: Il tipo Task<T> rappresenta un'operazione asincrona che può restituire un valore del tipo T.
@@ -60,35 +64,35 @@ namespace TrainingApp_WebAPI.SERVICE
         che il metodo è generico. Questo dichiara che il metodo può operare su qualsiasi tipo 
         di dati specificato al momento della chiamata del metodo
         */
-        public Task<T> GetAllAsync<T>()
+        public Task<Z> GetAllAsync<Z>()
         {
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.GET;
             apiRequest.Url = url + "/api/TrainingAppAPI";
 
-            return SendAsync<T>(apiRequest);
+            return SendAsync<Z>(apiRequest);
         }
 
-        public Task<T> GetAsync<T>(int id)
+        public Task<Z> GetAsync<Z>(int id)
         {
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.GET;
             apiRequest.Url = url + "/api/TrainingAppAPI/id:int?id=" + id;
 
-            return SendAsync<T>(apiRequest);
+            return SendAsync<Z>(apiRequest);
         }
 
-        public Task<T> UpdateAsync<T>(UserViewModel userViewModel)
+        public Task<Z> UpdateAsync<Z>(User user)
         {
             ApiRequest apiRequest = new ApiRequest();
 
             apiRequest.ApiType = ApiType.PUT;
             apiRequest.Url = url + "/api/TrainingAppAPI";
-            apiRequest.Data = userViewModel;
+            apiRequest.Data = user;
 
-            return SendAsync<T>(apiRequest);
+            return SendAsync<Z>(apiRequest);
         }
     }
 }

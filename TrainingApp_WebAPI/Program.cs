@@ -1,13 +1,17 @@
 using TrainingApp_WebAPI.SERVICE;
 using TrainingApp_WebAPI.SERVICE.INTERFACE;
+using TrainingApp_WebAPI.UTILITY;
+using TrainingApp_WebAPI.VIEWMODEL;
+using TrainingAppData.MODEL;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddHttpClient<IUserApiService, UserApiService>();
-builder.Services.AddScoped<IUserApiService, UserApiService>();
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+
+builder.Services.AddHttpClient<IApiService, ApiService>();
+builder.Services.AddScoped(typeof(IUserApiService), typeof(UserApiService));
+
 
 var app = builder.Build();
 

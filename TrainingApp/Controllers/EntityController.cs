@@ -59,7 +59,7 @@ namespace TrainingApp.Controllers
             {
                 entityViewModel = _mapper.Map<U>(entity);
 
-                TempData["errorList"] = JsonSerializer.Serialize(errorList);
+                TempData["errorList"] = JsonSerializerErrorList(errorList);
 
                 return RedirectToAction("Create", viewName, entityViewModel);
             }

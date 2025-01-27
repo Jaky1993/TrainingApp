@@ -21,19 +21,19 @@ namespace TrainingApp_WebAPI.SERVICE
         //HttpClient: The HttpClient class in .NET is a fundamental part of the System.Net.Http namespace.
         //It's designed to provide a flexible and efficient way to send HTTP requests and receive HTTP responses from
         //a resource identified by a URI.
-        protected IHttpClientFactory httpClient { get; set; }
+        protected IHttpClientFactory _httpClient { get; set; }
 
         public ApiService(IHttpClientFactory httpClient)
         {
             responseModel = new();
-            this.httpClient = httpClient;
+            _httpClient = httpClient;
         }
 
         public async Task<T> SendAsync<T>(ApiRequest apiRequest)
         {
             try
             {
-                var client = httpClient.CreateClient("TrainingApp"); //Creo una nuova istanza della classe HttpClient
+                var client = _httpClient.CreateClient("TrainingApp"); //Creo una nuova istanza della classe HttpClient
 
                 //HttpRequestMessage instance is a great way to customize HTTP requests
                 HttpRequestMessage message = new HttpRequestMessage();

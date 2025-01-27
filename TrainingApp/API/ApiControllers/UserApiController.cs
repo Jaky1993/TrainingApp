@@ -101,8 +101,6 @@ namespace TrainingApp.API.ApiControllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         //Questo stato viene utilizzato per segnalare che la richiesta inviata dal client è invalida
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //Non vengono trovati elementi
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ApiResponse>> CreateUser(UserViewModel userViewModel)
         {
             try
@@ -118,10 +116,21 @@ namespace TrainingApp.API.ApiControllers
 
                 if (userViewModel == null)
                 {
-                    return BadRequest(userViewModel);
+                    _response.ApiErrorList = new List<string> { "UserViewModel is null" };
+
+                    return BadRequest(_response);
                 }
 
                 User user = _mapper.Map<User>(userViewModel);
+
+                List<Tuple<string,string>> entityValidationErrorList = user.DataValidation(user);
+
+                if (entityValidationErrorList.Count > 0)
+                {
+                    _response.EntityValidationErrorList = entityValidationErrorList;
+
+                    return _response;
+                }
 
                 user.VersionId = 1;
 

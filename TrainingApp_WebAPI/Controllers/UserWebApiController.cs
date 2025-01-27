@@ -59,28 +59,28 @@ namespace TrainingApp_WebAPI.Controllers
             //il compilatore può dedurre che T deve essere ApiResponse senza bisogno di specificarlo esplicitamente.
             ApiResponse CreateResponse = await _userServiceApi.CreateAsync<ApiResponse>(user);
 
-            if (CreateResponse.EntityValidationErrorList.Count > 0)
+            if (CreateResponse.EntityValidationErrorList != null)
             {
                 TempData["errorList"] = JsonSerializerErrorList(CreateResponse.EntityValidationErrorList);
 
-                return RedirectToAction("Create", viewName, userViewModel);
+                return RedirectToAction("~/Views/User/Create.cshtml", viewName, userViewModel);
             }
 
             if (CreateResponse.StatusCode == HttpStatusCode.BadRequest)
             {
                 ViewBag.Error = CreateResponse.ApiErrorList;
 
-                return RedirectToAction("Create", viewName);
+                return RedirectToAction("~/Views/User/Create.cshtml", viewName);
             }
 
             if (CreateResponse.IsSuccess == false)
             {
                 ViewBag.Error = CreateResponse.ApiErrorList;
 
-                return RedirectToAction("Create", viewName);
+                return RedirectToAction("~/Views/User/Create.cshtml", viewName);
             }
 
-            return RedirectToAction("List", viewName);
+            return RedirectToAction("~/Views/User/List.cshtml", viewName);
         }
 
         public ActionResult Create(UserViewModel entityViewModel, List<Tuple<string, string>> errorList)

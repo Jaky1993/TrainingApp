@@ -47,7 +47,9 @@ namespace TrainingApp.API.ApiControllers
                 if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.ApiErrorList = new List<string> { "id is invalid" };
 
+                    //Status 400 BAD REQUEST -> richiesta inviata non valida
                     return BadRequest(_response);
                 }
 
@@ -57,13 +59,16 @@ namespace TrainingApp.API.ApiControllers
                 if (user == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.ApiErrorList = new List<string> { "user not found" };
 
+                    //Status 404 NOT FOUND non è stato trovato l'utente
                     return NotFound(_response);
                 }
 
                 _response.Result = _mapper.Map<UserViewModel>(user);
                 _response.StatusCode = HttpStatusCode.OK;
 
+                //Status 200 OK -> ritorno l'utente trovato
                 return Ok(_response);
             }
             catch (Exception ex)
@@ -77,13 +82,23 @@ namespace TrainingApp.API.ApiControllers
 
         [HttpGet(Name = "GetUserList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ApiResponse>> GetUserList()
         {
             try
             {
                 IEnumerable<User> userList = await _select.SelectList();
 
+                if (userList == null)
+                {
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.ApiErrorList = new List<string> { "user list not found" };
+
+                    return NotFound(_response);
+                }
+
                 _response.Result = _mapper.Map<List<UserViewModel>>(userList);
+                
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -91,6 +106,7 @@ namespace TrainingApp.API.ApiControllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.InternalServerError;
                 _response.ApiErrorList = new List<string> { ex.Message };
             }
 
@@ -117,6 +133,7 @@ namespace TrainingApp.API.ApiControllers
                 if (userViewModel == null)
                 {
                     _response.ApiErrorList = new List<string> { "UserViewModel is null" };
+                    _response.StatusCode = HttpStatusCode.BadRequest;
 
                     return BadRequest(_response);
                 }
@@ -128,8 +145,9 @@ namespace TrainingApp.API.ApiControllers
                 if (entityValidationErrorList.Count > 0)
                 {
                     _response.EntityValidationErrorList = entityValidationErrorList;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
 
-                    return _response;
+                    return BadRequest(_response);
                 }
 
                 user.VersionId = 1;

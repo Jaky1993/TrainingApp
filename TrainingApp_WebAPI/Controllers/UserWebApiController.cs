@@ -68,44 +68,47 @@ namespace TrainingApp_WebAPI.Controllers
                 user.UpdateDate = DateTime.Now;
             }
 
-            string viewName = user.GetType().Name;
-
             //Quando chiami il metodo con un parametro entity di tipo ApiResponse,
             //il compilatore può dedurre che T deve essere ApiResponse senza bisogno di specificarlo esplicitamente.
-            ApiResponse CreateResponse = await _userServiceApi.CreateAsync<ApiResponse>(user);
+            ApiResponse ApiResponse = await _userServiceApi.CreateAsync<ApiResponse>(user);
 
-            if (CreateResponse.StatusCode == HttpStatusCode.BadRequest)
+            if (ApiResponse.StatusCode == HttpStatusCode.BadRequest)
             {
-                if (CreateResponse.ApiErrorList.Count > 0)
+                if (ApiResponse.ApiErrorList.Count > 0)
                 {
-                    ViewBag.Error = CreateResponse.ApiErrorList;
+                    TempData["ApiErrorList"] = ApiResponse.ApiErrorList;
 
-                    return RedirectToAction("~/Views/User/Create.cshtml", viewName, userViewModel);
+                    return RedirectToAction("Create", userViewModel);
                 }
 
-                if (CreateResponse.EntityValidationErrorList.Count > 0)
+                if (ApiResponse.EntityValidationErrorList.Count > 0)
                 {
-                    TempData["errorList"] = JsonSerializerErrorList(CreateResponse.EntityValidationErrorList);
+                    TempData["EntityValidationErrorList"] = JsonSerializerErrorList(ApiResponse.EntityValidationErrorList);
 
-                    return RedirectToAction("~/Views/User/Create.cshtml", viewName, userViewModel);
+                    return RedirectToAction("Create", userViewModel);
                 }
             }
 
-            if (CreateResponse.IsSuccess == false)
+            if (ApiResponse.IsSuccess == false)
             {
-                ViewBag.Error = CreateResponse.ApiErrorList;
+                TempData["ApiErrorList"] = ApiResponse.ApiErrorList;
 
-                return RedirectToAction("Create", viewName);
+                return RedirectToAction("Create");
             }
 
-            return RedirectToAction("List", viewName);
+            return RedirectToAction("List");
         }
 
-        public ActionResult Create(UserViewModel entityViewModel, List<Tuple<string, string>> errorList)
+        public ActionResult Create(UserViewModel entityViewModel)
         {
-            if (TempData["errorList"] != null)
+            if (TempData["ApiErrorList"] != null)
             {
-                ViewBag.Error = JsonDeserializerErrorList(TempData["errorList"].ToString());
+                ViewBag.ApiErrorList = TempData["ApiErrorList"];
+            }
+
+            if (TempData["EntityValidationErrorList"] != null)
+            {
+                ViewBag.EntityValidationErrorList = TempData["EntityValidationErrorList"];
             }
 
             return View("~/Views/User/Create.cshtml", entityViewModel);

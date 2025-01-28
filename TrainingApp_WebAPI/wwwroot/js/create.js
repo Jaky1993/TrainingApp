@@ -1,7 +1,4 @@
-﻿var apiErrors = document.getElementById('apiErrorsId').value;
-var entityValidationErrorList = document.getElementById('entityValidationErrorListId').value;
-
-if (apiErrors != "null") {
+﻿if (apiErrors != "null") {
     for (var i = 0; i < apiErrors.length; i++) {
         var error = apiErrors[i];
 

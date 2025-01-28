@@ -70,8 +70,6 @@
                 <input type="submit" value="Create" class="btn btn-success form-control">
             </div>
         </div>
-        <input type="hidden" id="apiErrorsId" value="@Html.Raw(Json.Serialize(ViewBag.ApiErrorList))" />
-        <input type="hidden" id="entityValidationErrorListId" value="@Html.Raw(Json.Serialize(ViewBag.EntityValidationErrorList))" />
     </div>
 </form>
 
@@ -117,10 +115,9 @@
             alertDiv.textContent = propertyName + ": " + errorMessage; // Most
         }
     }
-
 </script>
 
-<!-- <script src="~/js/create.js"></script> -->
+<script src="~/js/create.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

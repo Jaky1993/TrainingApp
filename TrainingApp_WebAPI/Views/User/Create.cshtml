@@ -69,10 +69,12 @@
             <div class="col-5">
                 <input type="submit" value="Create" class="btn btn-success form-control">
             </div>
+            <input type="hidden" id="apiErrorList" data-value1="@Json.Serialize(ViewBag.ApiErrorList)" />
+            <input type="hidden" id="entityErrorList" data-value2="@ViewBag.EntityValidationErrorList" />
         </div>
     </div>
 </form>
-
+<!--
 <script type="text/javascript">
     var apiErrors = @Html.Raw(Json.Serialize(ViewBag.ApiErrorList));
     var entityValidationErrorList = @Html.Raw(ViewBag.EntityValidationErrorList);
@@ -83,17 +85,13 @@
         for (var i = 0; i < apiErrors.length; i++) {
             var error = apiErrors[i];
 
-            // Create a new div element
             var alertDiv = document.createElement("div");
             alertDiv.className = "alert alert-danger";
             alertDiv.textContent = error;
 
-            // Append the alert div to the apiErrorList div
             document.getElementById("apiErrorList").appendChild(alertDiv);
         }
     }
-
-    //var entityValidationErrorListParse = JSON.parse(entityValidationErrorList);
 
     if (entityValidationErrorList != null) {
         for (var i = 0; i < entityValidationErrorList.length; i++) {
@@ -116,8 +114,9 @@
         }
     }
 </script>
+-->
 
-<script src="~/js/create.js"></script>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

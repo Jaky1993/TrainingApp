@@ -1,4 +1,7 @@
-﻿if (apiErrors != "null") {
+﻿var apiErrors = $("#apiErrorList").data("value1");
+var entityValidationErrorList = $("#entityErrorList").data("value2");
+
+if (apiErrors !== "null" && apiErrors !== undefined) {
     for (var i = 0; i < apiErrors.length; i++) {
         var error = apiErrors[i];
 
@@ -12,13 +15,11 @@
     }
 }
 
-var entityValidationErrorListParse = JSON.parse(entityValidationErrorList);
-
-if (entityValidationErrorListParse != "null") {
-    for (var i = 0; i < entityValidationErrorListParse.length; i++) {
+if (entityValidationErrorList !== "null" && entityValidationErrorList !== undefined) {
+    for (var i = 0; i < entityValidationErrorList.length; i++) {
         
-        var propertyName = entityValidationErrorListParse[i].Item1; // Accedi alla proprietà
-        var errorMessage = entityValidationErrorListParse[i].Item2; // Accedi al messaggio di errore
+        var propertyName = entityValidationErrorList[i].Item1; // Accedi alla proprietà
+        var errorMessage = entityValidationErrorList[i].Item2; // Accedi al messaggio di errore
 
         if (propertyName == "Name") {
             document.getElementById("errorName").innerText = errorMessage;

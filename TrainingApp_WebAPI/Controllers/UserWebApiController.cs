@@ -113,5 +113,39 @@ namespace TrainingApp_WebAPI.Controllers
 
             return View("~/Views/User/Create.cshtml", entityViewModel);
         }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            UserViewModel userViewModel = new();
+
+            ApiResponse response = await _userServiceApi.GetAsync<ApiResponse>(id);
+
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                ViewBag.ApiErrorList = response.ApiErrorList;
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                ViewBag.ApiErrorList = response.ApiErrorList;
+            }
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                userViewModel = JsonConvert.DeserializeObject<UserViewModel>(Convert.ToString(response.Result));
+            }
+
+            if (TempData["ApiErrorList"] != null)
+            {
+                ViewBag.ApiErrorList = TempData["ApiErrorList"];
+            }
+
+            if (TempData["EntityValidationErrorList"] != null)
+            {
+                ViewBag.EntityValidationErrorList = TempData["EntityValidationErrorList"];
+            }
+
+            return View("~/Views/User/Edit.cshtml", userViewModel);
+        }
     }
 }

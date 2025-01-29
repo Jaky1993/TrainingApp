@@ -3,10 +3,19 @@
 <form asp-action="DoUpdate">
     <br />
     <div class="container border p-3">
-        <h1 class="text-primary">Create user</h1>
+        <h1 class="text-primary">Edit user</h1>
         <hr />
         <div class="row">
             <div id="apiErrorList"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Guid" />
+            <input type="hidden" asp-for="CreateDate" />
+            <input type="hidden" asp-for="UpdateDate" />
+            <input type="hidden" asp-for="VersionId" />
+            <input type="hidden" id="apiErrorList" data-value1="@ViewBag.ApiErrorList" />
+            <input type="hidden" id="entityErrorList" data-value2="@ViewBag.EntityValidationErrorList" />
+
             <!-- Name -->
             <div class="col-2">
                 <label asp-for="Name" class="control-label pt-2" style="font-size:20px"></label>
@@ -69,11 +78,7 @@
             <div class="col-5">
                 <input type="submit" value="Create" class="btn btn-success form-control">
             </div>
-            <input type="hidden" id="apiErrorList" data-value1="@Json.Serialize(ViewBag.ApiErrorList)" />
-            <input type="hidden" id="entityErrorList" data-value2="@ViewBag.EntityValidationErrorList" />
         </div>
-        <input type="hidden" id="apiErrorList" data-value1="@Json.Serialize(ViewBag.ApiErrorList)" />
-        <input type="hidden" id="entityErrorList" data-value2="@ViewBag.EntityValidationErrorList" />
     </div>
 </form>
 

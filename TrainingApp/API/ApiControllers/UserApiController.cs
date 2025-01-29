@@ -126,6 +126,7 @@ namespace TrainingApp.API.ApiControllers
                 if (userList.Find(U => U.Id == userViewModel.Id) != null)
                 {
                     _response.ApiErrorList = new List<string> { "User already exist" };
+                    _response.StatusCode = HttpStatusCode.BadRequest;
 
                     return BadRequest(_response);
                 }
@@ -217,7 +218,16 @@ namespace TrainingApp.API.ApiControllers
             {
                 if (id == 0)
                 {
+                    _response.ApiErrorList = new List<string> { "Id in equal to 0" };
                     return BadRequest();
+                }
+
+                User user = await _select.Select(id);
+
+                if (user == null)
+                {
+                    _response.ApiErrorList = new List<string> { "User not found" };
+                    return NotFound();
                 }
 
                 DateTime deleteDate = DateTime.Now;

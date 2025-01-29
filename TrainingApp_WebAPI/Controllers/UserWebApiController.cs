@@ -58,14 +58,20 @@ namespace TrainingApp_WebAPI.Controllers
         {
             user = _mapper.Map<User>(userViewModel);
 
+            string redirectViewName;
+
             if (user.Id == 0)
             {
                 user.VersionId = 1;
+
+                redirectViewName = "Create";
             }
             else
             {
                 user.VersionId = user.VersionId + 1;
                 user.UpdateDate = DateTime.Now;
+
+                redirectViewName = "Edit";
             }
 
             //Quando chiami il metodo con un parametro entity di tipo ApiResponse,
@@ -76,16 +82,16 @@ namespace TrainingApp_WebAPI.Controllers
             {
                 if (ApiResponse.ApiErrorList.Count > 0)
                 {
-                    TempData["ApiErrorList"] = ApiResponse.ApiErrorList;
+                    TempData["ApiErrorList"] = JsonConvert.SerializeObject(ApiResponse.ApiErrorList);
 
-                    return RedirectToAction("Create", userViewModel);
+                    return RedirectToAction(redirectViewName, userViewModel);
                 }
 
                 if (ApiResponse.EntityValidationErrorList.Count > 0)
                 {
                     TempData["EntityValidationErrorList"] = JsonSerializerErrorList(ApiResponse.EntityValidationErrorList);
 
-                    return RedirectToAction("Create", userViewModel);
+                    return RedirectToAction(redirectViewName, userViewModel);
                 }
             }
 
@@ -93,7 +99,35 @@ namespace TrainingApp_WebAPI.Controllers
             {
                 TempData["ApiErrorList"] = ApiResponse.ApiErrorList;
 
-                return RedirectToAction("Create");
+                return RedirectToAction(redirectViewName);
+            }
+
+            return RedirectToAction("List");
+        }
+
+        public async Task<ActionResult> DoDelete(int userId)
+        {
+            ApiResponse response = await _userServiceApi.DeleteAsync<ApiResponse>(userId);
+
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                ViewBag.Error = JsonConvert.SerializeObject(response.ApiErrorList);
+
+                return RedirectToAction("List");
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                ViewBag.Error = JsonConvert.SerializeObject(response.ApiErrorList);
+
+                return RedirectToAction("List");
+            }
+
+            if (response.IsSuccess == false)
+            {
+                ViewBag.Error = JsonConvert.SerializeObject(response.ApiErrorList);
+
+                return RedirectToAction("List");
             }
 
             return RedirectToAction("List");
@@ -114,25 +148,31 @@ namespace TrainingApp_WebAPI.Controllers
             return View("~/Views/User/Create.cshtml", entityViewModel);
         }
 
-        public async Task<ActionResult> Edit(int id)
+        [HttpGet]
+        public async Task<ActionResult> Edit(int userId, UserViewModel userViewModel)
         {
-            UserViewModel userViewModel = new();
-
-            ApiResponse response = await _userServiceApi.GetAsync<ApiResponse>(id);
-
-            if (response.StatusCode == HttpStatusCode.BadRequest)
+            if (userViewModel.Id == 0)
             {
-                ViewBag.ApiErrorList = response.ApiErrorList;
-            }
+                ApiResponse response = await _userServiceApi.GetAsync<ApiResponse>(userId);
 
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.ApiErrorList = response.ApiErrorList;
-            }
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    ViewBag.ApiErrorList = response.ApiErrorList;
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                userViewModel = JsonConvert.DeserializeObject<UserViewModel>(Convert.ToString(response.Result));
+                    return View("~/Views/User/Edit.cshtml");
+                }
+
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    ViewBag.ApiErrorList = response.ApiErrorList;
+
+                    return View("~/Views/User/Edit.cshtml");
+                }
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    userViewModel = JsonConvert.DeserializeObject<UserViewModel>(Convert.ToString(response.Result));
+                }
             }
 
             if (TempData["ApiErrorList"] != null)

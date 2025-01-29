@@ -6,7 +6,7 @@
         <h1 class="text-primary">Edit user</h1>
         <hr />
         <div class="row">
-            <div id="apiErrorList"></div>
+            <div id="errorList"></div>
 
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Guid" />
@@ -81,6 +81,8 @@
         </div>
     </div>
 </form>
+
+<script src="~/js/edit.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

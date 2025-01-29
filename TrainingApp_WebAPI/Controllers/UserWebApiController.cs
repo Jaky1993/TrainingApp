@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using TrainingApp_WebAPI.MODEL;
 using TrainingApp_WebAPI.MODEL.API;
 using TrainingApp_WebAPI.SERVICE.INTERFACE;
 using TrainingApp_WebAPI.VIEWMODEL;
-using System.Text.Json;
 using System.Net;
 using Azure;
+using Newtonsoft.Json;
 
 namespace TrainingApp_WebAPI.Controllers
 {

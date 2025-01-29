@@ -11,7 +11,7 @@ if (apiErrors !== "null" && apiErrors !== undefined) {
         alertDiv.textContent = error;
 
         // Append the alert div to the apiErrorList div
-        document.getElementById("apiErrorList").appendChild(alertDiv);
+        document.getElementById("errorList").appendChild(alertDiv);
     }
 }
 
